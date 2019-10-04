@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  kamailio:
+    image: kamailio:test
+    build:
+      context: .
+      dockerfile: Dockerfile.kamailio
+    volumes:
+      - ./kamailio:/etc/kamailio
+    ports:
+      - "5060"
+    networks:
+      main:
+        aliases:
+          - kamailio
+  
+  asterisk:
+    image: asterisk:test
+    build:
+      context: .
+      dockerfile: Dockerfile.asterisk
+    networks:
+      main:
+        aliases:
+          - asterisk
+    volumes:
+      - ./asterisk:/etc/asterisk
+
+networks:
+  main:
