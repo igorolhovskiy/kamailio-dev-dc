@@ -14,6 +14,8 @@ services:
       main:
         aliases:
           - kamailio
+    depends_on:
+      - db
   
   asterisk:
     image: asterisk:test
