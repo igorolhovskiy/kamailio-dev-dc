@@ -27,5 +27,16 @@ services:
     volumes:
       - ./asterisk:/etc/asterisk
 
+  db:
+    image: mariadb
+    environment:
+      MYSQL_DATABASE: 'kamailio'
+      MYSQL_USER: 'kamailio'
+      MYSQL_PASSWORD: 'kamailiorw'
+      MYSQL_ROOT_PASSWORD: '4321'
+    networks:
+      main:
+        aliases:
+          - db
 networks:
   main:
