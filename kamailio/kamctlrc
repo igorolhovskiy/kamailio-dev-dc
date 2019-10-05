@@ -5,7 +5,7 @@
 # will use their internal default values.
 
 ## your SIP domain
-# SIP_DOMAIN=kamailio.org
+SIP_DOMAIN=kamailio.org
 
 ## chrooted directory
 # $CHROOT_DIR="/path/to/chrooted/directory"
@@ -15,25 +15,25 @@
 #
 # If you want to setup a database with kamdbctl, you must at least specify
 # this parameter.
-# DBENGINE=MYSQL
+DBENGINE=MYSQL
 
 ## database host
-# DBHOST=localhost
+DBHOST=db
 
 ## database port
-# DBPORT=3306
+DBPORT=3306
 
 ## database name (for ORACLE this is TNS name)
-# DBNAME=kamailio
+DBNAME=kamailio
 
 # database path used by dbtext, db_berkeley or sqlite
 # DB_PATH="/usr/local/etc/kamailio/dbtext"
 
 ## database read/write user
-# DBRWUSER="kamailio"
+DBRWUSER="kamailio"
 
 ## password for database read/write user
-# DBRWPW="kamailiorw"
+DBRWPW="kamailiorw"
 
 ## database read only user
 # DBROUSER="kamailioro"
@@ -42,15 +42,15 @@
 # DBROPW="kamailioro"
 
 ## database access host (from where is kamctl used)
-# DBACCESSHOST=192.168.0.1
+DBACCESSHOST=db
 
 ## database super user (for ORACLE this is 'scheme-creator' user)
-# DBROOTUSER="root"
+DBROOTUSER="root"
 
 ## password for database super user
 ## - important: this is insecure, targeting the use only for automatic testing
 ## - known to work for: mysql
-# DBROOTPW="dbrootpw"
+DBROOTPW="dbrootpw"
 
 ## database character set (used by MySQL when creating database)
 #CHARSET="latin1"
@@ -102,13 +102,13 @@
 #
 
 # If to install tables for the modules in the EXTRA_MODULES variable.
-# INSTALL_EXTRA_TABLES=ask
+INSTALL_EXTRA_TABLES=yes
 
 # If to install presence related tables.
-# INSTALL_PRESENCE_TABLES=ask
+INSTALL_PRESENCE_TABLES=yes
 
 # If to install uid modules related tables.
-# INSTALL_DBUID_TABLES=ask
+INSTALL_DBUID_TABLES=yes
 
 # Define what module tables should be installed.
 # If you use the postgres database and want to change the installed tables, then you
@@ -116,12 +116,12 @@
 # kamdbctl.base script.
 
 # Kamailio standard modules
-# STANDARD_MODULES="standard acc lcr domain group permissions registrar usrloc msilo
-#                   alias_db uri_db speeddial avpops auth_db pdt dialog dispatcher
-#                   dialplan"
+STANDARD_MODULES="standard acc lcr domain group permissions registrar usrloc msilo
+                  alias_db uri_db speeddial avpops auth_db pdt dialog dispatcher
+                  dialplan"
 
 # Kamailio extra modules
-# EXTRA_MODULES="imc cpl siptrace domainpolicy carrierroute userblacklist htable purple sca"
+EXTRA_MODULES="imc cpl siptrace domainpolicy carrierroute userblacklist htable purple sca"
 
 
 ## type of aliases used: DB - database aliases; UL - usrloc aliases

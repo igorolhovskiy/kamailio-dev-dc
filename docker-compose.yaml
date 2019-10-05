@@ -33,7 +33,7 @@ services:
       MYSQL_DATABASE: 'kamailio'
       MYSQL_USER: 'kamailio'
       MYSQL_PASSWORD: 'kamailiorw'
-      MYSQL_ROOT_PASSWORD: '4321'
+      MYSQL_ROOT_PASSWORD: 'dbrootpw'
     networks:
       main:
         aliases:
