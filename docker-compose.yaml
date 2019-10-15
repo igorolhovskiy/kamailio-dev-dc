@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile.kamailio
     volumes:
-      - ./kamailio:/etc/kamailio
+      - "./kamailio:/etc/kamailio"
     ports:
       - "5060:5060/udp"
     networks:
@@ -17,7 +17,7 @@ services:
     depends_on:
       - db
   
-  asterisk:
+  asterisk_1:
     image: asterisk:test
     build:
       context: .
@@ -25,9 +25,21 @@ services:
     networks:
       main:
         aliases:
-          - asterisk
+          - asterisk_1
     volumes:
-      - ./asterisk:/etc/asterisk
+      - "./asterisk_1:/etc/asterisk"
+
+  asterisk_2:
+    image: asterisk:test
+    build:
+      context: .
+      dockerfile: Dockerfile.asterisk
+    networks:
+      main:
+        aliases:
+          - asterisk_2
+    volumes:
+      - "./asterisk_2:/etc/asterisk"
 
   db:
     image: mariadb
