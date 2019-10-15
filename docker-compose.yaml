@@ -9,7 +9,7 @@ services:
     volumes:
       - ./kamailio:/etc/kamailio
     ports:
-      - "5060"
+      - "5060:5060/udp"
     networks:
       main:
         aliases:
