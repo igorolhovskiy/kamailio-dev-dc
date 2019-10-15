@@ -58,6 +58,4 @@ VOLUME ["/etc/kamailio"]
 
 EXPOSE 5060/udp
 
-EXPOSE 5060
-
 ENTRYPOINT ["kamailio", "-DD", "-E"]
