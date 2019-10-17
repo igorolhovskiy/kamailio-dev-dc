@@ -10,6 +10,9 @@ services:
       - "./kamailio:/etc/kamailio"
     ports:
       - "5060:5060/udp"
+      - "5060:5060/tcp"
+    extra_hosts:
+      - "sip.localhost.com:127.0.0.1"
     networks:
       frontend:
       backend:
