@@ -11,7 +11,8 @@ services:
     ports:
       - "5060:5060/udp"
     networks:
-      main:
+      frontend:
+      backend:
         aliases:
           - kamailio
     depends_on:
@@ -23,7 +24,7 @@ services:
       context: .
       dockerfile: Dockerfile.asterisk
     networks:
-      main:
+      backend:
         aliases:
           - asterisk_1
     volumes:
@@ -35,7 +36,7 @@ services:
       context: .
       dockerfile: Dockerfile.asterisk
     networks:
-      main:
+      backend:
         aliases:
           - asterisk_2
     volumes:
@@ -49,8 +50,9 @@ services:
       MYSQL_PASSWORD: 'kamailiorw'
       MYSQL_ROOT_PASSWORD: 'dbrootpw'
     networks:
-      main:
+      backend:
         aliases:
           - db
 networks:
-  main:
+  frontend:
+  backend:
