@@ -9,13 +9,12 @@ services:
     volumes:
       - "./kamailio:/etc/kamailio"
     ports:
-      - "5060:5060/udp"
-      - "5060:5060/tcp"
+      - "5080:5080/udp"
+      - "5080:5080/tcp"
     extra_hosts:
       - "sip.localhost.com:127.0.0.1"
     networks:
-      frontend:
-      backend:
+      main:
         aliases:
           - kamailio
     depends_on:
@@ -27,7 +26,7 @@ services:
       context: .
       dockerfile: Dockerfile.asterisk
     networks:
-      backend:
+      main:
         aliases:
           - asterisk_1
     volumes:
@@ -39,7 +38,7 @@ services:
       context: .
       dockerfile: Dockerfile.asterisk
     networks:
-      backend:
+      main:
         aliases:
           - asterisk_2
     volumes:
@@ -53,9 +52,8 @@ services:
       MYSQL_PASSWORD: 'kamailiorw'
       MYSQL_ROOT_PASSWORD: 'dbrootpw'
     networks:
-      backend:
+      main:
         aliases:
           - db
 networks:
-  frontend:
-  backend:
+  main:
