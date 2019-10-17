@@ -9,7 +9,10 @@ services:
     volumes:
       - "./kamailio:/etc/kamailio"
     ports:
-      - "5060:5060/udp"
+      - "5080:5080/udp"
+      - "5080:5080/tcp"
+    extra_hosts:
+      - "sip.localhost.com:127.0.0.1"
     networks:
       main:
         aliases:
