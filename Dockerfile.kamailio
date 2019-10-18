@@ -58,8 +58,8 @@ RUN rm -rf /var/lib/apt/lists/* && \
 
 VOLUME ["/etc/kamailio"]
 
-EXPOSE 5060/udp
-EXPOSE 5060/tcp
+EXPOSE 5080/udp
+EXPOSE 5080/tcp
 
 ADD docker-entrypoint-kamailio.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
