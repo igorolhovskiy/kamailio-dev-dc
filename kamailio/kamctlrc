@@ -36,10 +36,10 @@ DBRWUSER="kamailio"
 DBRWPW="kamailiorw"
 
 ## database read only user
-# DBROUSER="kamailioro"
+DBROUSER="kamailio"
 
 ## password for database read only user
-# DBROPW="kamailioro"
+DBROPW="kamailiorw"
 
 ## database access host (from where is kamctl used)
 DBACCESSHOST=db
