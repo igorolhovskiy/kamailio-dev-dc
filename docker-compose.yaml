@@ -2,7 +2,7 @@ version: "3"
 
 services:
   kamailio:
-    image: kamailio:test
+    image: kamailio:redirect-302
     build:
       context: .
       dockerfile: Dockerfile.kamailio
@@ -21,7 +21,7 @@ services:
       - db
   
   asterisk_1:
-    image: asterisk:test
+    image: asterisk:redirect-302
     build:
       context: .
       dockerfile: Dockerfile.asterisk
@@ -36,7 +36,7 @@ services:
       - "./asterisk_1:/etc/asterisk"
 
   asterisk_2:
-    image: asterisk:test
+    image: asterisk:redirect-302
     build:
       context: .
       dockerfile: Dockerfile.asterisk
