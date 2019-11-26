@@ -17,8 +17,8 @@ services:
       main:
         aliases:
           - kamailio
-    depends_on:
-      - db
+    #depends_on:
+    #  - db
   
   asterisk_1:
     image: asterisk:redirect-302
@@ -28,6 +28,7 @@ services:
     ports:
       - "5061:5061/udp"
       - "5061:5061/tcp"
+      - "8080:80/tcp"
     networks:
       main:
         aliases:
@@ -50,16 +51,16 @@ services:
     volumes:
       - "./asterisk_2:/etc/asterisk"
 
-  db:
-    image: mariadb
-    environment:
-      MYSQL_DATABASE: 'kamailio'
-      MYSQL_USER: 'kamailio'
-      MYSQL_PASSWORD: 'kamailiorw'
-      MYSQL_ROOT_PASSWORD: 'dbrootpw'
-    networks:
-      main:
-        aliases:
-          - db
+  #db:
+  #  image: mariadb
+  #  environment:
+  #    MYSQL_DATABASE: 'kamailio'
+  #    MYSQL_USER: 'kamailio'
+  #    MYSQL_PASSWORD: 'kamailiorw'
+  #    MYSQL_ROOT_PASSWORD: 'dbrootpw'
+  #  networks:
+  #    main:
+  #      aliases:
+  #        - db
 networks:
   main:
