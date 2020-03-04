@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE scenario SYSTEM "sipp.dtd">
-<!-- Usage: sipp 10.100.5.228 -sf sipp_sms.xml -l 1 -r 1 -->
+<!-- Usage: sipp kamailio -sf /opt/sipp_sms.xml -l 1 -r 1 -->
 
-<scenario name="Sending SMS to 112">
+<scenario name="Sending SMS to SERVICE">
   <send retrans="500">
-    <!-- Что за заголовок? P-Visited-Network-ID: 79262000000 -->
     <![CDATA[
 
-      INVITE sip:112@10.100.5.228 SIP/2.0
+      INVITE sip:[service]@[remote_ip] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
       From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
       To: sip:112@[remote_ip]:[remote_port]
@@ -53,7 +52,7 @@
   <send>
     <![CDATA[
 
-      ACK sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+      ACK sip:[service]@[remote_ip] SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
       From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
       To: sip:112@[remote_ip]:[remote_port][peer_tag_param]
@@ -65,10 +64,6 @@
 
     ]]>
   </send>
-
-  <!-- This delay can be customized by the -d command-line option       -->
-  <!-- or by adding a 'milliseconds = "value"' option here.             -->
-  <pause/>
 
   <recv request="BYE">
   </recv>
