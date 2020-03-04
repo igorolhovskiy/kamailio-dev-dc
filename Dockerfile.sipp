@@ -1,0 +1,19 @@
+FROM debian:buster
+
+MAINTAINER Igor Olhovskiy <IgorOlhovskiy@gmail.com>
+
+# avoid httpredir errors
+RUN sed -i 's/httpredir/deb/g' /etc/apt/sources.list
+
+RUN rm -rf /var/lib/apt/lists/* && \
+    apt-get update && \
+    apt-get install --assume-yes \
+        sip-tester && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+VOLUME /opt
+
+ADD docker-entrypoint-sipp.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -2,43 +2,30 @@ version: "3"
 
 services:
   kamailio:
-    image: kamailio:test
+    image: kamailio:sms_receive
     build:
       context: .
       dockerfile: Dockerfile.kamailio
     volumes:
       - ./kamailio:/etc/kamailio
-    ports:
-      - "5060"
     networks:
       main:
         aliases:
           - kamailio
     depends_on:
-      - db
+      - sipp
   
-  asterisk:
-    image: asterisk:test
+  sipp:
+    image: sipp:sms_receive
     build:
       context: .
-      dockerfile: Dockerfile.asterisk
-    networks:
-      main:
-        aliases:
-          - asterisk
+      dockerfile: Dockerfile.sipp
     volumes:
-      - ./asterisk:/etc/asterisk
-
-  db:
-    image: mariadb
-    environment:
-      MYSQL_DATABASE: 'kamailio'
-      MYSQL_USER: 'kamailio'
-      MYSQL_PASSWORD: 'kamailiorw'
-      MYSQL_ROOT_PASSWORD: 'dbrootpw'
+      - ./sipp:/opt
     networks:
       main:
         aliases:
-          - db
+          - sipp
+
 networks:
   main:
