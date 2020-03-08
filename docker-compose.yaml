@@ -30,12 +30,16 @@ services:
       - ./asterisk:/etc/asterisk
 
   db:
-    image: mariadb
+    image: mariadb:latest
+    user: "1000:100"
     environment:
       MYSQL_DATABASE: 'kamailio'
       MYSQL_USER: 'kamailio'
       MYSQL_PASSWORD: 'kamailiorw'
       MYSQL_ROOT_PASSWORD: 'dbrootpw'
+    volumes:
+      - ./db/initial_data:/docker-entrypoint-initdb.d
+      - ./db/data:/var/lib/mysql
     networks:
       main:
         aliases:
