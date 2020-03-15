@@ -3,43 +3,28 @@ version: "3"
 services:
   kamailio:
     image: kamailio:test
+    user: "1000:100"
     build:
       context: .
       dockerfile: Dockerfile.kamailio
     volumes:
       - ./kamailio:/etc/kamailio
     ports:
-      - "5060"
+      - "5060:5060"
+      - "5061:5061"
     networks:
       main:
         aliases:
           - kamailio
     depends_on:
-      - db
-  
-  asterisk:
-    image: asterisk:test
+      - rtpengine
+
+  rtpengine:
+    image: rtpengine:latest
+    user: "1000:100"
     build:
       context: .
-      dockerfile: Dockerfile.asterisk
-    networks:
-      main:
-        aliases:
-          - asterisk
-    volumes:
-      - ./asterisk:/etc/asterisk
-
-  db:
-    image: mariadb:latest
-    user: "1000:100"
-    environment:
-      MYSQL_DATABASE: 'kamailio'
-      MYSQL_USER: 'kamailio'
-      MYSQL_PASSWORD: 'kamailiorw'
-      MYSQL_ROOT_PASSWORD: 'dbrootpw'
-    volumes:
-      - ./db/initial_data:/docker-entrypoint-initdb.d
-      - ./db/data:/var/lib/mysql
+      dockerfile: Dockerfile.rtpengine
     networks:
       main:
         aliases:
