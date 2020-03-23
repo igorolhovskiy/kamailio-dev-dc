@@ -1,0 +1,4 @@
+# setid(integer) destination(sip uri) flags (integer, optional), priority(int,opt), attrs (str,optional)
+1 sip:sip.pstnhub.microsoft.com;transport=tls 0 3 socket=tls:10.10.10.10:5061;ping_from=sip:sbc.mypbx.com
+1 sip:sip2.pstnhub.microsoft.com;transport=tls 0 2 socket=tls:10.10.10.10:5061;ping_from=sip:sbc.mypbx.com
+1 sip:sip3.pstnhub.microsoft.com;transport=tls 0 1 socket=tls:10.10.10.10:5061;ping_from=sip:sbc.mypbx.com

@@ -3,7 +3,6 @@ version: "3"
 services:
   kamailio:
     image: kamailio:test
-    user: "1000:100"
     build:
       context: .
       dockerfile: Dockerfile.kamailio
@@ -16,18 +15,15 @@ services:
       main:
         aliases:
           - kamailio
-    depends_on:
-      - rtpengine
 
   rtpengine:
     image: rtpengine:latest
-    user: "1000:100"
     build:
       context: .
       dockerfile: Dockerfile.rtpengine
     networks:
       main:
         aliases:
-          - db
+          - rtpengine
 networks:
   main:

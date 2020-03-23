@@ -1,0 +1,4 @@
+#!KAMAILIO
+
+#!substdef "/LOCAL_IF_ADDRESS/10.10.10.10/g"
+#!substdef "/SBC_DNS_DOMAIN/sbc.mypbx.com/g"

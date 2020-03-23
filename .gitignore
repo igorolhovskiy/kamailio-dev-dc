@@ -1,1 +1,2 @@
-db/data/
+kamailio/kamailio-local.cfg
+kamailio/dispatcher.list
