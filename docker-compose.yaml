@@ -10,10 +10,10 @@ services:
       - "./kamailio:/etc/kamailio"
     ports:
       - "5060:5060/udp"
-    #  - "5060:5060/tcp"
+      - "5061:5061/tcp"
       - "8080:80/tcp"
     #extra_hosts:
-    #  - "sip.localhost.com:127.0.0.1"
+    #  - "sip.localhost.net:127.0.0.1"
     networks:
       main:
         aliases:
@@ -21,35 +21,35 @@ services:
     #depends_on:
     #  - db
   
-  asterisk_1:
-    image: asterisk:redirect-302
-    build:
-      context: .
-      dockerfile: Dockerfile.asterisk
-    ports:
-      - "5061:5061/udp"
-      - "5061:5061/tcp"
-    networks:
-      main:
-        aliases:
-          - asterisk_1
-    volumes:
-      - "./asterisk_1:/etc/asterisk"
+  # asterisk_1:
+  #   image: asterisk:redirect-302
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.asterisk
+  #   ports:
+  #     - "5061:5061/udp"
+  #     - "5061:5061/tcp"
+  #   networks:
+  #     main:
+  #       aliases:
+  #         - asterisk_1
+  #   volumes:
+  #     - "./asterisk_1:/etc/asterisk"
 
-  asterisk_2:
-    image: asterisk:redirect-302
-    build:
-      context: .
-      dockerfile: Dockerfile.asterisk
-    ports:
-      - "5062:5062/udp"
-      - "5062:5062/tcp"
-    networks:
-      main:
-        aliases:
-          - asterisk_2
-    volumes:
-      - "./asterisk_2:/etc/asterisk"
+  # asterisk_2:
+  #   image: asterisk:redirect-302
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.asterisk
+  #   ports:
+  #     - "5062:5062/udp"
+  #     - "5062:5062/tcp"
+  #   networks:
+  #     main:
+  #       aliases:
+  #         - asterisk_2
+  #   volumes:
+  #     - "./asterisk_2:/etc/asterisk"
 
   #db:
   #  image: mariadb
