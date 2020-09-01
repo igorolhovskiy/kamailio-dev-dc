@@ -15,7 +15,7 @@ SIP_DOMAIN=kamailio.org
 #
 # If you want to setup a database with kamdbctl, you must at least specify
 # this parameter.
-DBENGINE=MYSQL
+DBENGINE=DBTEXT
 
 ## database host
 DBHOST=db
@@ -27,7 +27,7 @@ DBPORT=3306
 DBNAME=kamailio
 
 # database path used by dbtext, db_berkeley or sqlite
-# DB_PATH="/usr/local/etc/kamailio/dbtext"
+# DB_PATH="/tmp"
 
 ## database read/write user
 DBRWUSER="kamailio"
