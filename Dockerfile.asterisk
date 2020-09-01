@@ -1,6 +1,6 @@
 FROM alpine:3.10
 
-MAINTAINER Andrius Kairiukstis <andrius@kairiukstis.com>
+LABEL maintainer='Andrius Kairiukstis <andrius@kairiukstis.com>'
 
 RUN apk add --update \
       asterisk \

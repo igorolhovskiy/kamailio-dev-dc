@@ -2,7 +2,7 @@ version: "3"
 
 services:
   kamailio:
-    image: kamailio:test
+    image: kamailio-dev-dc:master
     build:
       context: .
       dockerfile: Dockerfile.kamailio
@@ -10,14 +10,15 @@ services:
       - ./kamailio:/etc/kamailio
       - ./db:/db
     ports:
-      - "5060"
+      - "5060:5060"
+      - "udp/5060:5060"
     networks:
       main:
         aliases:
           - kamailio
 
   asterisk:
-    image: asterisk:test
+    image: asterisk-dev-dc:master
     build:
       context: .
       dockerfile: Dockerfile.asterisk
