@@ -2,7 +2,7 @@ version: "3"
 
 services:
   kamailio:
-    image: kamailio-dev-dc:master
+    image: kamailio-dev-dc:kwc2020-lb
     build:
       context: .
       dockerfile: Dockerfile.kamailio
@@ -12,22 +12,36 @@ services:
     ports:
       - "5060:5060"
       - "5060:5060/udp"
+    extra_hosts:
+      - "sip.localhost.com:127.0.0.1"
     networks:
       main:
         aliases:
           - kamailio
 
-  asterisk:
-    image: asterisk-dev-dc:master
+  asterisk_1:
+    image: asterisk-dev-dc:kwc2020-lb
     build:
       context: .
       dockerfile: Dockerfile.asterisk
     networks:
       main:
         aliases:
-          - asterisk
+          - asterisk_1
     volumes:
-      - ./asterisk:/etc/asterisk
+      - "./asterisk_1:/etc/asterisk"
+
+  asterisk_2:
+    image: asterisk-dev-dc:kwc2020-lb
+    build:
+      context: .
+      dockerfile: Dockerfile.asterisk
+    networks:
+      main:
+        aliases:
+          - asterisk_2
+    volumes:
+      - "./asterisk_2:/etc/asterisk"
 
 networks:
   main:

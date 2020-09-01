@@ -1,1 +1,3 @@
-id(int,auto) setid(int) destination(string) flags(int) priority(int) attrs(string) description(string) 
+id(int,auto) setid(int) destination(string) flags(int) priority(int) attrs(string) description(string)
+1:1:sip\:asterisk_1\:5060:2:0::asterisk_1
+2:1:sip\:asterisk_2\:5060:2:0::asterisk_2
