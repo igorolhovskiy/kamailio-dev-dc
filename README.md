@@ -8,3 +8,4 @@ Docker-compose file for developig for Kamailio and Asterisk as a backend helper
 # docker-compose exec kamailio bash
 > kamcmd
 >> dispatcher.add 1 sip:asterisk_2:5060
+```
