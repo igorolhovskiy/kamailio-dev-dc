@@ -2,7 +2,7 @@ version: "3"
 
 services:
   kamailio:
-    image: kamailio:sms_receive
+    image: kamailio-dev-dc:sms_receive
     build:
       context: .
       dockerfile: Dockerfile.kamailio
@@ -14,9 +14,9 @@ services:
           - kamailio
     depends_on:
       - sipp
-  
+
   sipp:
-    image: sipp:sms_receive
+    image: sipp-dev-dc:sms_receive
     build:
       context: .
       dockerfile: Dockerfile.sipp

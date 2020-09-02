@@ -1,6 +1,6 @@
 FROM debian:buster
 
-MAINTAINER Igor Olhovskiy <IgorOlhovskiy@gmail.com>
+LABEL maintainer='Igor Olhovskiy <IgorOlhovskiy@gmail.com>'
 
 # avoid httpredir errors
 RUN sed -i 's/httpredir/deb/g' /etc/apt/sources.list
@@ -12,7 +12,7 @@ RUN rm -rf /var/lib/apt/lists/* && \
     wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | apt-key add - && \
     apt-get update && \
     apt-get install --assume-yes sngrep \
-                        kamailio \ 
+                        kamailio \
                         kamailio-autheph-modules \
                         kamailio-berkeley-bin \
                         kamailio-berkeley-modules \
