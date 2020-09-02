@@ -1,6 +1,6 @@
 FROM debian:buster
 
-MAINTAINER Igor Olhovskiy <IgorOlhovskiy@gmail.com>
+LABEL maintainer='Igor Olhovskiy <IgorOlhovskiy@gmail.com>'
 
 # avoid httpredir errors
 RUN sed -i 's/httpredir/deb/g' /etc/apt/sources.list
@@ -16,5 +16,7 @@ VOLUME /opt
 
 ADD docker-entrypoint-sipp.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+WORKDIR /opt
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
