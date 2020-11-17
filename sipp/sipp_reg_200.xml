@@ -2,7 +2,7 @@
 <!DOCTYPE scenario SYSTEM "sipp.dtd">
 <!-- Usage: sipp kamailio -sf /opt/sipp_sms.xml -l 1 -r 1 -->
 
-<scenario name="Sending REGISTER - INVITE - CANCEL">
+<scenario name="Sending REGISTER - 200">
 <send retrans="500">
   <![CDATA[
     REGISTER sip:[service]@[remote_ip] SIP/2.0
@@ -27,24 +27,6 @@
 <!-- against stateful SIP proxies/B2BUAs.                             -->
 <recv response="200" rtd="true">
 </recv>
-
-<recv request="INVITE" crlf="true">
-</recv>
-
-<send>
-  <![CDATA[
-
-  SIP/2.0 100 Trying
-  [last_Via:]
-  [last_From:]
-  [last_To:];tag=[pid]SIPpTag01[call_number]
-  [last_Call-ID:]
-  [last_CSeq:]
-  Contact: <sip:[local_ip]:[local_port];transport=[transport]>
-  Content-Length: 0
-
-  ]]>
-</send>
 
   <!-- definition of the response time repartition table (unit is ms)   -->
   <ResponseTimeRepartition value="10, 20, 30, 40, 50, 100, 150, 200"/>
