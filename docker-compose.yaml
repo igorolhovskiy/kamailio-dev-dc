@@ -1,24 +1,20 @@
 version: "3"
 
-services:
-  kamailio:
-    image: kamailio-dev-dc:master
+
+  sipp:
+    image: sipp-dev-dc:loop-protection-asterisk
     build:
       context: .
-      dockerfile: Dockerfile.kamailio
+      dockerfile: Dockerfile.sipp
     volumes:
-      - ./kamailio:/etc/kamailio
-      - ./db:/db
-    ports:
-      - "5060:5060"
-      - "5060:5060/udp"
+      - ./sipp:/opt
     networks:
       main:
         aliases:
-          - kamailio
+          - sipp
 
   asterisk:
-    image: asterisk-dev-dc:master
+    image: asterisk-dev-dc:loop-protection-asterisk
     build:
       context: .
       dockerfile: Dockerfile.asterisk

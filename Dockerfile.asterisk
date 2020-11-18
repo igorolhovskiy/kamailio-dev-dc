@@ -1,24 +1,82 @@
-FROM alpine:3.10
+FROM centos:7
 
-LABEL maintainer='Andrius Kairiukstis <andrius@kairiukstis.com>'
+LABEL maintainer='Igor Olhovskiy <IgorOlhovskiy@gmail.com>'
 
-RUN apk add --update \
-      asterisk \
-      asterisk-sample-config \
-&& rm -rf /usr/lib/asterisk/modules/*pjsip* \
-&& asterisk -U asterisk \
-&& sleep 5 \
-&& pkill -9 asterisk \
-&& pkill -9 astcanary \
-&& sleep 2 \
-&& rm -rf /var/run/asterisk/* \
-&& mkdir -p /var/spool/asterisk/fax \
-&& chown -R asterisk: /var/spool/asterisk/fax \
-&& truncate -s 0 /var/log/asterisk/messages \
-                 /var/log/asterisk/queue_log \
-&&  rm -rf /var/cache/apk/* \
-           /tmp/* \
-           /var/tmp/*
+RUN yum update -y && \
+    yum install net-tools \
+            wget \
+            gcc \
+            gcc-c++ \
+            sqlite \
+            sqlite-devel \
+            automake \
+            ncurses-devel \
+            openssl-devel \
+            libxml2-devel \
+            libcurl-devel \
+            libogg-devel \
+            libvorbis-devel \
+            speex-devel \
+            spandsp-devel \
+            freetds-devel \
+            net-snmp-devel \
+            corosynclib-devel \
+            newt-devel \
+            popt-devel \
+            libtool-ltdl-devel \
+            lua-devel \
+            radiusclient-ng-devel \
+            portaudio-devel \
+            postgresql-devel \
+            neon-devel \
+            libical-devel \
+            openldap-devel \
+            bluez-libs-devel \
+            jack-audio-connection-kit-devel \
+            gsm-devel \
+            libedit-devel \
+            libuuid-devel \
+            jansson-devel \
+            libsrtp-devel \
+            pjproject-devel \
+            subversion \
+            git \
+            libxslt-devel \
+            net-snmp-devel \
+            python2-pip \
+            MySQL-python \
+            mpg123 \
+            cx_Oracle \
+            mysql-connector-python \
+            oracle-instantclient-tnsnames.ora \
+            oracle-instantclient-devel \
+RUN yum -y install make gcc gcc-c++ make subversion libxml2-devel ncurses-devel openssl-devel vim-enhanced man glibc-devel autoconf libnewt kernel-devel kernel-headers linux-headers openssl-devel zlib-devel libsrtp libsrtp-devel uuid libuuid-devel mariadb-server jansson-devel libsqlite3x libsqlite3x-devel epel-release.noarch bash-completion bash-completion-extras unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel mysql-connector-odbc mlocate libiodbc sqlite sqlite-devel sql-devel.i686 sqlite-doc.noarch sqlite-tcl.x86_64
+RUN yum install bzip2 -y
+
+  $pkg_list=['mpg123', 'cx_Oracle', 'mysql-connector-python', 'oracle-instantclient-tnsnames.ora', 'oracle-instantclient-devel']
+
+RUN mkdir -p ~/src/asterisk/
+RUN cd /root/src/asterisk/
+RUN wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16-current.tar.gz
+RUN tar -xzvf asterisk-16-current.tar.gz
+RUN /bin/sh asterisk-16.5.0/contrib/scripts/install_prereq install
+RUN /bin/sh asterisk-16.5.0/contrib/scripts/install_prereq install-unpackaged
+WORKDIR asterisk-16.5.0
+RUN /bin/sh configure --with-pjproject-bundled --with-jansson-bundled
+RUN make
+RUN make install
+RUN make samples
+RUN make config
+RUN ldconfig
+RUN adduser asteriskpbx \
+&& chown -R asteriskpbx:asteriskpbx /usr/lib/asterisk/   \
+&& chown -R asteriskpbx:asteriskpbx /var/lib/asterisk     \
+&& chown -R asteriskpbx:asteriskpbx /var/spool/asterisk/  \
+&& chown -R asteriskpbx:asteriskpbx /var/log/asterisk/    \
+&& chown -R asteriskpbx:asteriskpbx /var/run/asterisk/    \
+&& chown -R asteriskpbx:asteriskpbx /usr/sbin/asterisk    \
+&& chown -R asteriskpbx:asteriskpbx /usr/sbin/asterisk    \
+&& chown -R asteriskpbx:asteriskpbx /var/log/asterisk
 
 VOLUME /etc/asterisk
 
