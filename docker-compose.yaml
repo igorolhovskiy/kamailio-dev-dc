@@ -1,29 +1,11 @@
 version: "3"
 
-
-  sipp:
-    image: sipp-dev-dc:loop-protection-asterisk
-    build:
-      context: .
-      dockerfile: Dockerfile.sipp
-    volumes:
-      - ./sipp:/opt
-    networks:
-      main:
-        aliases:
-          - sipp
-
-  asterisk:
-    image: asterisk-dev-dc:loop-protection-asterisk
-    build:
-      context: .
-      dockerfile: Dockerfile.asterisk
-    networks:
-      main:
-        aliases:
-          - asterisk
-    volumes:
-      - ./asterisk:/etc/asterisk
-
-networks:
-  main:
+services:
+    asterisk:
+        image: asterisk-dev-dc:asterisk-host-13
+        build:
+            context: .
+            dockerfile: Dockerfile.asterisk
+        network_mode: "host"
+        volumes:
+            - ./asterisk:/etc/asterisk

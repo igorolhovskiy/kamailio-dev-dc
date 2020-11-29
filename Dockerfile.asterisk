@@ -2,81 +2,75 @@ FROM centos:7
 
 LABEL maintainer='Igor Olhovskiy <IgorOlhovskiy@gmail.com>'
 
-RUN yum update -y && \
-    yum install net-tools \
-            wget \
-            gcc \
-            gcc-c++ \
-            sqlite \
-            sqlite-devel \
-            automake \
-            ncurses-devel \
-            openssl-devel \
-            libxml2-devel \
-            libcurl-devel \
-            libogg-devel \
-            libvorbis-devel \
-            speex-devel \
-            spandsp-devel \
-            freetds-devel \
-            net-snmp-devel \
-            corosynclib-devel \
-            newt-devel \
-            popt-devel \
-            libtool-ltdl-devel \
-            lua-devel \
-            radiusclient-ng-devel \
-            portaudio-devel \
-            postgresql-devel \
-            neon-devel \
-            libical-devel \
-            openldap-devel \
-            bluez-libs-devel \
-            jack-audio-connection-kit-devel \
-            gsm-devel \
-            libedit-devel \
-            libuuid-devel \
-            jansson-devel \
-            libsrtp-devel \
-            pjproject-devel \
-            subversion \
-            git \
-            libxslt-devel \
-            net-snmp-devel \
-            python2-pip \
-            MySQL-python \
-            mpg123 \
-            cx_Oracle \
-            mysql-connector-python \
-            oracle-instantclient-tnsnames.ora \
-            oracle-instantclient-devel \
-RUN yum -y install make gcc gcc-c++ make subversion libxml2-devel ncurses-devel openssl-devel vim-enhanced man glibc-devel autoconf libnewt kernel-devel kernel-headers linux-headers openssl-devel zlib-devel libsrtp libsrtp-devel uuid libuuid-devel mariadb-server jansson-devel libsqlite3x libsqlite3x-devel epel-release.noarch bash-completion bash-completion-extras unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel mysql-connector-odbc mlocate libiodbc sqlite sqlite-devel sql-devel.i686 sqlite-doc.noarch sqlite-tcl.x86_64
-RUN yum install bzip2 -y
+ENV PJSIP_VERSION=2.5.1
+ENV ASTERISK_VERSION=13.9.1
+ENV ASTERISK_USER=asteriskpbx
 
-  $pkg_list=['mpg123', 'cx_Oracle', 'mysql-connector-python', 'oracle-instantclient-tnsnames.ora', 'oracle-instantclient-devel']
-
-RUN mkdir -p ~/src/asterisk/
-RUN cd /root/src/asterisk/
-RUN wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16-current.tar.gz
-RUN tar -xzvf asterisk-16-current.tar.gz
-RUN /bin/sh asterisk-16.5.0/contrib/scripts/install_prereq install
-RUN /bin/sh asterisk-16.5.0/contrib/scripts/install_prereq install-unpackaged
-WORKDIR asterisk-16.5.0
-RUN /bin/sh configure --with-pjproject-bundled --with-jansson-bundled
-RUN make
-RUN make install
-RUN make samples
-RUN make config
-RUN ldconfig
-RUN adduser asteriskpbx \
-&& chown -R asteriskpbx:asteriskpbx /usr/lib/asterisk/   \
-&& chown -R asteriskpbx:asteriskpbx /var/lib/asterisk     \
-&& chown -R asteriskpbx:asteriskpbx /var/spool/asterisk/  \
-&& chown -R asteriskpbx:asteriskpbx /var/log/asterisk/    \
-&& chown -R asteriskpbx:asteriskpbx /var/run/asterisk/    \
-&& chown -R asteriskpbx:asteriskpbx /usr/sbin/asterisk    \
-&& chown -R asteriskpbx:asteriskpbx /usr/sbin/asterisk    \
-&& chown -R asteriskpbx:asteriskpbx /var/log/asterisk
+RUN yum update -y \
+    && yum -y install gcc \
+        gcc-c++ \
+        kernel-devel \
+        automake gsm-devel \
+        openssl-devel \
+        ncurses-devel \
+        newt-devel \
+        libuuid-devel \
+        jansson-devel \
+        libxml2-devel \
+        libtool-ltdl \
+        libtool-ltdl-devel \
+        sqlite-devel \
+        lynx \
+        bison \
+        psmisc \
+        make \
+        ncurses-devel \
+        libtermcap-devel \
+        newt-devel \
+        libxml2-devel \
+        libtiff-devel \
+        audiofile-devel \
+        gtk2-devel \
+        uuid-devel \
+        libtool \
+        bzip2 \
+        wget \
+        unixODBC \
+        unixODBC-devel \
+    && cd /usr/src \
+    && wget -O pjproject.tar.bz2 http://www.pjsip.org/release/${PJSIP_VERSION}/pjproject-${PJSIP_VERSION}.tar.bz2 \
+    && mkdir pjproject \
+    && tar xjvf pjproject.tar.bz2 -C ./pjproject --strip-components=1 \
+    && cd pjproject \
+    && ./configure \
+        CFLAGS='-DPJ_HAS_IPV6=1 -O2 -DNDEBUG' \
+        -libdir=/usr/lib64 \
+        --prefix=/usr \
+        --enable-shared \
+        --disable-sound \
+        --disable-video \
+        --disable-opencore-amr \
+    && make dep \
+    && make \
+    && make install \
+    && ldconfig \
+    && cd /usr/src \
+    && wget -O asterisk.tar.gz http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-${ASTERISK_VERSION}.tar.gz \
+    && mkdir asterisk \
+    && tar xvzf asterisk.tar.gz -C ./asterisk --strip-components=1 \
+    && cd asterisk \
+    && ./bootstrap.sh \
+    && ./configure --libdir=/usr/lib64 \
+    && make menuselect.makeopts \
+    && make \
+    && make install \
+    && adduser ${ASTERISK_USER} \
+    && chown -R ${ASTERISK_USER}:${ASTERISK_USER} /usr/lib64/asterisk/   \
+    && chown -R ${ASTERISK_USER}:${ASTERISK_USER} /var/lib/asterisk    \
+    && chown -R ${ASTERISK_USER}:${ASTERISK_USER} /var/spool/asterisk/ \
+    && chown -R ${ASTERISK_USER}:${ASTERISK_USER} /var/run/asterisk/   \
+    && chown -R ${ASTERISK_USER}:${ASTERISK_USER} /usr/sbin/asterisk   \
+    && chown -R ${ASTERISK_USER}:${ASTERISK_USER} /var/log/asterisk
 
 VOLUME /etc/asterisk
 

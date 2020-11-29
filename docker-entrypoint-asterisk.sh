@@ -14,7 +14,7 @@ if [ "${ASTERISK_UID}" != "" ] && [ "${ASTERISK_GID}" != "" ]; then
   # recreate user and group for asterisk
   # if they've sent as env variables (i.e. to macth with host user to fix permissions for mounted folders
 
-  deluser asterisk && \
+  deluser ${ASTERISK_USER} && \
   addgroup -g ${ASTERISK_GID} ${ASTERISK_GROUP} && \
   adduser -D -H -u ${ASTERISK_UID} -G ${ASTERISK_GROUP} ${ASTERISK_USER} \
   || exit
