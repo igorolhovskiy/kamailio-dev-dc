@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+<!-- Usage: sipp kamailio -sf /opt/sipp_sms.xml -l 1 -r 1 -->
+
+<scenario name="Sending SMS to SERVICE">
+  <send retrans="500">
+    <![CDATA[
+
+      INVITE sip:[service]@[remote_ip] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
+      To: sip:112@[remote_ip]:[remote_port]
+      Call-ID: [call_id]
+      CSeq: 1 INVITE
+      Contact: sip:sipp@[local_ip]:[local_port]
+      Max-Forwards: 70
+      P-Visited-Network-ID: 792xxxxxxxx
+      Content-Type: multipart/mixed;boundary=unique-boundary-1
+      Content-Length:[len]
+
+      --unique-boundary-1
+      Content-Type: application/pidf+xml
+      Content-ID: target@10.108.219.210
+
+      <?xml version="1.0" encoding="UTF-8"?><presence xmlns="urn:ietf:params:xml:ns:pidf" entity="7927xxxxxxx" xsi:schemaLocation="urn:ietf:params:xml:ns:pidf presence.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gp="urn:ietf:params:xml:ns:pidf:geopriv10" xmlns:gml="http://www.opengis.net/gml" xmlns:gs="http://www.opengis.net/pidflo/1.0" xmlns:dm="urn:ietf:params:xml:ns:pidf:data-model"><dm:device id="Q6C416E2-B153-443B-B2FX"><gp:geopriv><gp:location-info><gml:location><gs:Circle srsName="urn:ogc:def:crs:EPSG::4326"><gml:pos>35.1657 53.1945</gml:pos><gs:radius uom="urn:ogc:def:uom:EPSG::9001">602.0</gs:radius></gs:Circle></gml:location></gp:location-info></gp:geopriv><dm:deviceID>250523035305</dm:deviceID><dm:timestamp>2020-03-02T10:52:22.604Z</dm:timestamp></dm:device></presence>
+      --unique-boundary-1
+      Content-Disposition: form-data; name="part"
+      Content-Type: text/plain; charset=UTF-8
+      Content-Transfer-Encoding: 8bit
+
+      Hello world!
+      --unique-boundary-1--
+
+    ]]>
+  </send>
+
+  <recv response="100" optional="true">
+  </recv>
+
+  <recv response="180" optional="true">
+  </recv>
+
+  <recv response="183" optional="true">
+  </recv>
+
+  <!-- By adding rrs="true" (Record Route Sets), the route sets         -->
+  <!-- are saved and used for following messages sent. Useful to test   -->
+  <!-- against stateful SIP proxies/B2BUAs.                             -->
+  <recv response="200" rtd="true">
+  </recv>
+
+  <send>
+    <![CDATA[
+
+      ACK sip:[service]@[remote_ip] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag00[call_number]
+      To: sip:112@[remote_ip]:[remote_port][peer_tag_param]
+      Call-ID: [call_id]
+      CSeq: 1 ACK
+      Contact: sip:sipp@[local_ip]:[local_port]
+      Max-Forwards: 70
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <recv request="BYE">
+  </recv>
+
+  <send>
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Length: 0
+
+    ]]>
+  </send>
+  <!-- definition of the response time repartition table (unit is ms)   -->
+  <ResponseTimeRepartition value="10, 20, 30, 40, 50, 100, 150, 200"/>
+
+  <!-- definition of the call length repartition table (unit is ms)     -->
+  <CallLengthRepartition value="10, 50, 100, 500, 1000, 5000, 10000"/>
+
+</scenario>
