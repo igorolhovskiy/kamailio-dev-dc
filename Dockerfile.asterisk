@@ -2,8 +2,7 @@ FROM centos:7
 
 LABEL maintainer='Igor Olhovskiy <IgorOlhovskiy@gmail.com>'
 
-ENV PJSIP_VERSION=2.5.1
-ENV ASTERISK_VERSION=13.9.1
+ENV ASTERISK_VERSION=13.38.0
 ENV ASTERISK_USER=asteriskpbx
 
 RUN yum update -y \
@@ -38,30 +37,47 @@ RUN yum update -y \
         unixODBC \
         unixODBC-devel \
     && cd /usr/src \
-    && wget -O pjproject.tar.bz2 http://www.pjsip.org/release/${PJSIP_VERSION}/pjproject-${PJSIP_VERSION}.tar.bz2 \
-    && mkdir pjproject \
-    && tar xjvf pjproject.tar.bz2 -C ./pjproject --strip-components=1 \
-    && cd pjproject \
-    && ./configure \
-        CFLAGS='-DPJ_HAS_IPV6=1 -O2 -DNDEBUG' \
-        -libdir=/usr/lib64 \
-        --prefix=/usr \
-        --enable-shared \
-        --disable-sound \
-        --disable-video \
-        --disable-opencore-amr \
-    && make dep \
-    && make \
-    && make install \
-    && ldconfig \
-    && cd /usr/src \
     && wget -O asterisk.tar.gz http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-${ASTERISK_VERSION}.tar.gz \
     && mkdir asterisk \
     && tar xvzf asterisk.tar.gz -C ./asterisk --strip-components=1 \
     && cd asterisk \
     && ./bootstrap.sh \
-    && ./configure --libdir=/usr/lib64 \
+    && ./configure --libdir=/usr/lib64 --with-pjproject-bundled \
     && make menuselect.makeopts \
+    && menuselect/menuselect --enable DEBUG_THREADS \
+        --enable DONT_OPTIMIZE \
+        --enable BETTER_BACKTRACES \
+        --disable res_config_ldap \
+        --disable res_config_pgsql \
+        --disable res_xmpp \
+        --disable res_phoneprov \
+        --disable res_calendar \
+        --disable res_calendar_ews \
+        --disable res_config_sqlite3 \
+        --disable res_config_curl \
+        --disable chan_skinny \
+        --disable chan_unistim \
+        --disable app_agent_pool \
+        --disable cdr_radius \
+        --disable cdr_tds \
+        --disable cdr_pgsql \
+        --disable cel_pgsql \
+        --disable cel_radius \
+        --disable cel_sqlite3_custom \
+        --disable cel_tds \
+        --disable app_zapateller \
+        --disable res_calendar_caldav \
+        --disable res_calendar_exchange \
+        --disable res_calendar_icalendar \
+        --disable chan_sip \
+        --disable pbx_lua \
+        --disable res_parking \
+        --disable chan_console \
+        --disable chan_iax2 \
+        --disable chan_alsa \
+        --disable chan_oss \
+        --disable pbx_ael \
+        --enable-category MENUSELECT_CODECS menuselect.makeopts \
     && make \
     && make install \
     && adduser ${ASTERISK_USER} \
