@@ -30,7 +30,7 @@
  <recv response="180" optional="true">
  </recv>
 
- <recv response="603">
+ <recv response="503">
  </recv>
 
  <send>
