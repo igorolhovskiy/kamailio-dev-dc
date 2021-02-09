@@ -36,12 +36,12 @@ RUN yum update -y \
         wget \
         unixODBC \
         unixODBC-devel \
+        patch \
     && cd /usr/src \
     && wget -O asterisk.tar.gz http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-${ASTERISK_VERSION}.tar.gz \
     && mkdir asterisk \
     && tar xvzf asterisk.tar.gz -C ./asterisk --strip-components=1 \
     && cd asterisk \
-    && ./bootstrap.sh \
     && ./configure --libdir=/usr/lib64 --with-pjproject-bundled \
     && make menuselect.makeopts \
     && menuselect/menuselect --enable DEBUG_THREADS \
