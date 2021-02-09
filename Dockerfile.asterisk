@@ -4,6 +4,7 @@ LABEL maintainer='Igor Olhovskiy <IgorOlhovskiy@gmail.com>'
 
 ENV ASTERISK_VERSION=13.38.0
 ENV ASTERISK_USER=asteriskpbx
+ENV SNGREP_VER=1.4.8-0.el7
 
 RUN yum update -y \
     && yum -y install gcc \
@@ -37,6 +38,9 @@ RUN yum update -y \
         unixODBC \
         unixODBC-devel \
         patch \
+    && cd /root \
+    && wget -O sngrep.rpm http://packages.irontec.com/centos/7/x86_64/sngrep-${SNGREP_VER}.x86_64.rpm \
+    && yum install -y sngrep.rpm \
     && cd /usr/src \
     && wget -O asterisk.tar.gz http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-${ASTERISK_VERSION}.tar.gz \
     && mkdir asterisk \

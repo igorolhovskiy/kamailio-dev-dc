@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ "${ROLE}" == "UAS" ]]; then
-    /usr/bin/sipp -sf /opt/sipp_uas.xml -r 1 -l 1 -m 1
+    /usr/bin/sipp -sf /opt/sipp_uas.xml -m 100
 else
 # This is UAC
     while true; do

@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <scenario name="Basic UAS scenario">
  <recv request="INVITE">
-
-  <action>
-   <!-- since we need to send a request to the remote part -->
-   <!-- we need to extract the Contact and the From header content -->
-   <ereg regexp=".*" search_in="hdr" header="From" assign_to="remote_from"/>
-   <!-- assign the content of the Contaact SIP URI to the remote_contact var -->
-   <!-- first var of assign_to contains the whole match -->
-   <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="trash,remote_contact"/>
-  </action>
  </recv>
- <!-- since SIPp complains about not used variable reference the trach var -->
-
- <Reference variables="trash"/>
 
 <send>
 <![CDATA[
