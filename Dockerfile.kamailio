@@ -8,7 +8,7 @@ RUN dnf update -y \
     && dnf -y install dnf-plugins-core \
     && dnf config-manager --add-repo https://rpm.kamailio.org/centos/kamailio.repo \
     && rpm --import https://rpm.kamailio.org/rpm-pub.key \
-    && dnf install --disablerepo=kamailio --enablerepo=kamailio-${KAMAILIO_VERSION} \
+    && dnf -y install --disablerepo=kamailio --enablerepo=kamailio-${KAMAILIO_VERSION} \
         kamailio \
         kamailio-http_async_client \
         kamailio-http_client \
@@ -26,7 +26,7 @@ RUN dnf update -y \
         kamailio-utils \
         kamailio-websocket \
         kamailio-xmlrpc \
-        kamailio-xmlops \
+        kamailio-xmlops
 
 VOLUME ["/etc/kamailio", "/db"]
 
