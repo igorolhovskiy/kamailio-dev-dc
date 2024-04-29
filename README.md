@@ -1,3 +1,10 @@
 # kamailio-dev-dc
 
-Docker-compose file for developing for Kamailio and Asterisk as a backend helper
+Specific branch to test https://github.com/kamailio/kamailio/issues/3832
+
+```sh
+docker compose build
+docker compose up -d
+
+docker compose run --entrypoint /bin/bash kamailio
+```

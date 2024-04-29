@@ -27,7 +27,7 @@ DBPORT=3306
 DBNAME=kamailio
 
 # database path used by dbtext, db_berkeley or sqlite
-# DB_PATH="/db"
+DB_PATH="/db"
 
 ## database read/write user
 DBRWUSER="kamailio"

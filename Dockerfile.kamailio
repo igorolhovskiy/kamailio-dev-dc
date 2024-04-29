@@ -1,33 +1,47 @@
-FROM almalinux:9
+FROM almalinux/9-base
 
 LABEL maintainer="Ihor Olhovskyi <ihor@provoip.org>"
 
-ENV KAMAILIO_VERSION=5.8
+#ENV KAMAILIO_GIT_BRANCH=fix-tls-python
+ENV KAMAILIO_GIT_BRANCH=5.8
 
-RUN dnf update -y \
-    && dnf -y install dnf-plugins-core \
-    && dnf config-manager --add-repo https://rpm.kamailio.org/centos/kamailio.repo \
-    && rpm --import https://rpm.kamailio.org/rpm-pub.key \
-    && dnf -y install --disablerepo=kamailio --enablerepo=kamailio-${KAMAILIO_VERSION} \
-        kamailio \
-        kamailio-http_async_client \
-        kamailio-http_client \
-        kamailio-jansson \
-        kamailio-json \
-        kamailio-lua \
-        kamailio-mysql \
-        kamailio-presence \
-        kamailio-python \
-        kamailio-regex \
-        kamailio-sipdump \
-        kamailio-tcpops \
-        kamailio-tls \
-        kamailio-tls_wolfssl \
-        kamailio-utils \
-        kamailio-websocket \
-        kamailio-xmlrpc \
-        kamailio-xmlops
+RUN dnf -y install yum-utils \
+    && dnf config-manager --set-enabled crb \
+    && dnf update -y \
+    && dnf -y install git \
+        gcc \
+        flex \
+        bison \
+        gcc-c++ \
+        git \
+        make \
+        gnutls-devel \
+        autoconf \
+        automake \
+        python-pip \
+        zlib-devel \
+        openssl-devel \
+        python3-devel \
+        mariadb-devel \
+        python \
+        net-snmp-devel \
+        libxml2-devel \
+        pcre2-devel \
+        libunistring-devel \
+        sscg \
+    # For a test
+    && pip install requests_oauthlib \
+    && cd /etc/ssl \
+    && sscg
 
-VOLUME ["/etc/kamailio", "/db"]
+RUN cd /usr/src/ \
+    && git clone -b ${KAMAILIO_GIT_BRANCH} https://github.com/kamailio/kamailio.git \
+    && cd kamailio \
+    && make include_modules='jsonrpcs kex tm tmx sl rr pv usrloc registrar textops textopsx siputils xlog sanity ctl cfg_rpc acc app_python3 cfgutils tsilo htable xhttp nathelper rtpengine siptrace tcpops auth auth_db tls pike debugger uac dispatcher exec sqlops dialog pua pua_dialoginfo regex secfilter topos xmlops snmpstats db_mysql websocket' \
+        skip_modules='app_sqlang sca kemix topoh tlsa' cfg \
+    && make all \
+    && make install
 
-ENTRYPOINT ["kamailio", "-DD", "-E"]
+VOLUME ["/usr/local/etc/kamailio"]
+
+ENTRYPOINT ["/usr/local/sbin/kamailio", "-DD", "-E"]

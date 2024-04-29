@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   kamailio:
     image: kamailio-dev-dc:master
@@ -7,27 +5,31 @@ services:
       context: .
       dockerfile: Dockerfile.kamailio
     volumes:
-      - ./kamailio:/etc/kamailio
+      - ./kamailio:/usr/local/etc/kamailio
       - ./db:/db
     ports:
       - "5060:5060"
       - "5060:5060/udp"
+      - "5061:5061"
+    depends_on:
+      - db
     networks:
       main:
         aliases:
           - kamailio
 
-  asterisk:
-    image: asterisk-dev-dc:master
-    build:
-      context: .
-      dockerfile: Dockerfile.asterisk
+  db:
+    image: mariadb:lts
+    environment:
+      - MARIADB_DATABASE=kamailio
+      - MARIADB_USER=kamailio
+      - MARIADB_PASSWORD=kamailiorw
+      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       main:
         aliases:
-          - asterisk
-    volumes:
-      - ./asterisk:/etc/asterisk
-
+          - db
 networks:
   main:
