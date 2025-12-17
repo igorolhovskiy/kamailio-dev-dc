@@ -2,7 +2,7 @@ version: "3"
 
 services:
   kamailio:
-    image: kamailio-dev-dc:kwc2020-lb
+    image: kamailio-dev-dc:kam585-lb
     build:
       context: .
       dockerfile: Dockerfile.kamailio
@@ -20,7 +20,7 @@ services:
           - kamailio
 
   asterisk_1:
-    image: asterisk-dev-dc:kwc2020-lb
+    image: asterisk-dev-dc:kam585-lb
     build:
       context: .
       dockerfile: Dockerfile.asterisk
@@ -32,7 +32,7 @@ services:
       - "./asterisk_1:/etc/asterisk"
 
   asterisk_2:
-    image: asterisk-dev-dc:kwc2020-lb
+    image: asterisk-dev-dc:kam585-lb
     build:
       context: .
       dockerfile: Dockerfile.asterisk

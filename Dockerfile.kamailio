@@ -1,15 +1,12 @@
-FROM debian:buster
+FROM debian:bookworm
 
 LABEL maintainer="Igor Olhovskiy <IgorOlhovskiy@gmail.com>"
-
-# avoid httpredir errors
-RUN sed -i 's/httpredir/deb/g' /etc/apt/sources.list
 
 RUN rm -rf /var/lib/apt/lists/* && \
     apt-get update && \
     apt-get install --assume-yes gnupg wget && \
-    echo "deb http://deb.kamailio.org/kamailio53 buster main" >   /etc/apt/sources.list.d/kamailio.list && \
-    wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | apt-key add - && \
+    echo "deb [signed-by=/usr/share/keyrings/kamailio-deb.gpg] http://deb.kamailio.org/kamailio58 bookworm main" > /etc/apt/sources.list.d/kamailio.list && \
+    wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | gpg --dearmor | tee /usr/share/keyrings/kamailio-deb.gpg > /dev/null 2>&1 && \
     apt-get update && \
     apt-get install --assume-yes sngrep \
                         kamailio \
@@ -38,7 +35,7 @@ RUN rm -rf /var/lib/apt/lists/* && \
                         kamailio-phonenum-modules \
                         kamailio-postgres-modules \
                         kamailio-presence-modules \
-                        kamailio-python-modules \
+                        kamailio-python3-modules \
                         kamailio-rabbitmq-modules \
                         kamailio-radius-modules \
                         kamailio-redis-modules \
