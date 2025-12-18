@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   kamailio:
     image: kamailio-dev-dc:kam585-lb
