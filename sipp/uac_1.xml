@@ -32,6 +32,7 @@
       Call-ID: [call_id]
       CSeq: 1 INVITE
       Contact: sip:90002@[local_ip]:[local_port]
+      P-Preferred-Identity: <sip:+90001@sip.external.com:5060>
       Max-Forwards: 70
       Subject: Performance Test
       Content-Type: application/sdp
